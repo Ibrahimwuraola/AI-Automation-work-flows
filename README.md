@@ -1,1 +1,1 @@
-# AI-Automation-work-flows
+# AI-Automation-workflows
