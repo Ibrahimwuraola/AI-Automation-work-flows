@@ -1,0 +1,201 @@
+{
+  "name": "My workflow day 13",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nuvio",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "e3c41c11-6c28-4cb6-8ae3-3945302e157b",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -592,
+        -80
+      ],
+      "webhookId": "0b19c8a1-3fd5-431c-88ce-d4b67cb3f293"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=email: {{ $json.body.To }}\nemail content :{{ $json.body.emailcontent }}",
+        "options": {
+          "systemMessage": "You are an AI agent responsible for drafting and sending professional emails based on user instructions.\n\nYou have access to two tools:\n\n1. MyContacts\n   - Purpose: Find and retrieve the email address of a person.\n   - Input: The person's name.\n   - Output: The person's email address.\n\n2. SendEmail\n   - Purpose: Compose and send an email.\n   - Input: The recipient's email address, email subject, email body, and sender/signature information.\n   - Action: Send the composed email to the identified recipient.\n\nYour objective is to:\n\n1. Understand the user's email request.\n2. Identify the intended recipient.\n3. Use MyContacts to retrieve the recipient's email address.\n4. Draft a clear, professional, and appropriate email based on the user's instructions.\n5. Ensure the email is properly structured with:\n   - Recipient\n   - Subject\n   - Professional greeting\n   - Email body\n   - Appropriate closing\n   - Signature: Olalekan\n6. Use SendEmail to send the email to the identified recipient.\n\nImportant instructions:\n\n- Always use MyContacts when the recipient's email address is not already provided.\n- Do not guess or invent an email address.\n- Make the email professional, concise, and aligned with the user's instructions.\n- Before sending, ensure that the recipient, subject, and email content are correct.\n- Sign every email as \"Adebayo.\"\n- If essential information is missing, ask the user for clarification before sending.\n- Do not send an email to the wrong recipient.\n- After successfully sending the email, confirm that it has been sent.\n\nThe available tools are:\n\nMyContacts — retrieve the email address of a person using their name.\n\nSendEmail — compose and send the email using the recipient's email address and the drafted message.\n\nYour role is to identify the recipient, retrieve their contact information, draft the professional email, and send it on behalf of the user, signing off as Adebayo."
+        }
+      },
+      "id": "963144b0-eb32-4352-a9c0-9784a844ba61",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -272,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.6-luna",
+          "mode": "list",
+          "cachedResultName": "gpt-5.6-luna"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "f3e8a14c-406c-4cb3-a0e8-1a3d88e65435",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -272,
+        112
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "DIX6bzAXBS51VtJI",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Zrb5abST-kkY8MmyAKZCF9t_4LCfM9tJSJD6sBhvB14",
+          "mode": "list",
+          "cachedResultName": "My Contact",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Zrb5abST-kkY8MmyAKZCF9t_4LCfM9tJSJD6sBhvB14/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Zrb5abST-kkY8MmyAKZCF9t_4LCfM9tJSJD6sBhvB14/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "097e55c3-894d-49ba-95ca-eb865230ca7d",
+      "name": "My Contact",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        128
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uYU8RSZELJGJiRWW",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $fromAI(\"emailaddress\") }}",
+        "subject": "={{ $fromAI(\"subject\") }}",
+        "message": "={{ $fromAI(\"emailcontent\") }}",
+        "options": {}
+      },
+      "id": "31765de1-c89a-4d99-96fa-15d9beb79013",
+      "name": "Send Gmail",
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        96
+      ],
+      "webhookId": "9770fb5e-6cb5-47ae-b1da-07914779499d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NYJcQkwdxuVaAcNa",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "635bc1be-6a51-4664-b345-97464d8bbdae",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        144,
+        -224
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "My Contact": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

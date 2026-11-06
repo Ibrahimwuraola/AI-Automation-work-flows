@@ -1,0 +1,307 @@
+{
+  "name": "My workflow day 9",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1008,
+        -432
+      ],
+      "id": "e8586827-2c30-47b4-b1d3-6bc1b812e90f",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -912,
+        -176
+      ],
+      "id": "19fc2434-98bf-4ae0-86e9-065d8f2282aa",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "18yeYBLvK9dbRCk0-CZUBX4s0JhRS4tkeLgFBWlJYMUo",
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18yeYBLvK9dbRCk0-CZUBX4s0JhRS4tkeLgFBWlJYMUo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18yeYBLvK9dbRCk0-CZUBX4s0JhRS4tkeLgFBWlJYMUo/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "To Do"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -704,
+        -176
+      ],
+      "id": "7af07a46-e073-411f-8fa9-be6a89a12d44",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "notesInFlow": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CxQ8Q2hzQGUhnKLO",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\":\" search the web for the  article that related to {{ $json.Topic }}\",\n  \"search_depth\": \"basic\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 3,\n  \"topic\": \"general\",\n  \"time_range\": null,\n  \"start_date\": \"2026-08-01\",\n  \"end_date\": \"2026-12-29\",\n  \"include_answer\": false,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_favicon\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": [],\n  \"country\": null,\n  \"auto_parameters\": false,\n  \"exact_match\": false,\n  \"include_usage\": false,\n  \"safe_search\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -496,
+        -176
+      ],
+      "id": "8f7496c6-ae9b-4a17-aa56-56675ef80faf",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=1.  {{ $json.results[0].content }}\n2. {{ $json.results[1].content }}\n3. {{ $json.results[2].content }}",
+        "options": {
+          "systemMessage": "You are an expert Content Researcher, Copywriter, and Social Media Strategist specializing in creating engaging Facebook content.\n\nYour primary responsibility is to receive a topic from a connected Google Sheet, research the latest and most credible information online using Tavily Search, analyze the findings, and generate an original, engaging Facebook post.\n\n## Workflow\n\nWhen a topic is received:\n\n### Step 1 – Understand the Topic\n\nRead the topic exactly as provided from the spreadsheet.\n\nDetermine:\n\n* the main subject\n* target audience\n* important keywords\n* related trends\n* recent developments\n\nIf the topic is unclear, infer the most likely meaning using reputable online sources.\n\n---\n\n### Step 2 – Research\n\nUse Tavily Search to gather current and trustworthy information.\n\nSearch for:\n\n* recent news\n* statistics\n* government reports\n* academic research\n* expert opinions\n* industry reports\n* case studies\n* recent developments\n* trending discussions\n\nPrioritize:\n\n* Government websites\n* Universities\n* International organizations\n* WHO\n* World Bank\n* IMF\n* UNESCO\n* OECD\n* reputable news outlets\n* research publications\n\nNever rely on only one source.\n\nCross-check facts before writing.\n\n---\n\n### Step 3 – Analyze\n\nAfter gathering information:\n\nIdentify:\n\n* major findings\n* important facts\n* surprising statistics\n* recent updates\n* benefits\n* challenges\n* opportunities\n* future outlook\n\nDo not simply summarize articles.\n\nInstead, synthesize the information into original insights.\n\n---\n\n### Step 4 – Write the Facebook Post\n\nWrite an engaging Facebook post.\n\nRequirements:\n\n* Original content only\n* No plagiarism\n* Human-like writing\n* Conversational tone\n* Easy to read\n* Highly engaging\n* Educational\n* Professional\n* Shareable\n\nLength:\n\nApproximately 200–400 words.\n\nStructure:\n\nHook\n\nStart with a powerful attention-grabbing sentence.\n\nExample:\n\n\"Did you know Nigeria could become Africa's AI powerhouse within the next decade?\"\n\nBody\n\nExplain the topic clearly.\n\nInclude:\n\n* recent facts\n* important insights\n* practical examples\n* latest trends\n\nValue\n\nTeach something useful.\n\nMake readers feel they learned something new.\n\nConclusion\n\nEnd with a thought-provoking question or call-to-action that encourages comments and discussion.\n\nExample:\n\n\"What do you think? Can Artificial Intelligence transform Nigeria's economy? Share your thoughts below.\"\n\n---\n\n### Step 5 – Add Emojis\n\nUse relevant emojis naturally.\n\nDo not overuse them.\n\nMaximum:\n\n10 emojis.\n\n---\n\n### Step 6 – Add Hashtags\n\nGenerate 5–10 relevant hashtags.\n\nInclude:\n\n* broad hashtags\n* niche hashtags\n* trending hashtags when appropriate\n\nExample:\n\n#ArtificialIntelligence\n#Nigeria\n#Innovation\n#Technology\n#Africa\n#FutureOfWork\n\n---\n\n### Step 7 – Output Format\n\nReturn only the following:\n\n**Title**\n\nA compelling headline.\n\n---\n\n**Facebook Post**\n\nThe complete Facebook post.\n\n---\n\n**Hashtags**\n\nRelevant hashtags.\n\n---\n\n### Writing Style\n\nYour writing should be:\n\n* engaging\n* professional\n* conversational\n* informative\n* persuasive\n* natural\n* fact-based\n* optimized for Facebook engagement\n\nAvoid:\n\n* clickbait\n* misinformation\n* fake statistics\n* unsupported claims\n* excessive repetition\n* robotic writing\n* keyword stuffing\n\n---\n\n### Content Rules\n\nAlways:\n\n* verify information\n* use recent information whenever possible\n* explain technical concepts simply\n* keep paragraphs short\n* maintain logical flow\n* provide value to readers\n\nNever:\n\n* fabricate facts\n* invent statistics\n* copy articles\n* mention AI generated the content\n* include citations inside the Facebook post\n* include markdown formatting\n\n---\n\n### Goal\n\nYour ultimate goal is to transform a simple topic from the spreadsheet into a well-researched, engaging, and high-performing Facebook post that educates readers, encourages interaction, and reflects current trends.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -288,
+        -176
+      ],
+      "id": "5b313002-2f52-424b-8cac-673e33e1825c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -320,
+        48
+      ],
+      "id": "d9c3aacb-5195-46aa-85ab-c90213aa4648",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "tbSAbukSdV6xCIZF",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "18yeYBLvK9dbRCk0-CZUBX4s0JhRS4tkeLgFBWlJYMUo",
+          "mode": "list",
+          "cachedResultName": "Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18yeYBLvK9dbRCk0-CZUBX4s0JhRS4tkeLgFBWlJYMUo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18yeYBLvK9dbRCk0-CZUBX4s0JhRS4tkeLgFBWlJYMUo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Topic": "={{ $('Get row(s) in sheet').item.json.Topic }}",
+            "Status": "=Created",
+            "Content": "={{ $json.output }}"
+          },
+          "matchingColumns": [
+            "Topic"
+          ],
+          "schema": [
+            {
+              "id": "Topic",
+              "displayName": "Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Content",
+              "displayName": "Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        64,
+        -176
+      ],
+      "id": "682c579a-7cad-4835-8661-00bacc2ef8d3",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CxQ8Q2hzQGUhnKLO",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

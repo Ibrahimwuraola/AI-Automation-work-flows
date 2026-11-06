@@ -1,0 +1,286 @@
+{
+  "name": "Nuvio Agency AI Client Email Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "readStatus": "unread"
+        }
+      },
+      "id": "1efdb285-472e-400d-b80c-c9f88f633762",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1536,
+        64
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NYJcQkwdxuVaAcNa",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst j = item.json;\n\nconst headers = j.headers || {};\nconst getHeader = (name) => {\n  const key = Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase());\n  return key ? headers[key] : '';\n};\n\nconst from = j.From || j.from || getHeader('from') || '';\nconst subject = j.Subject || j.subject || getHeader('subject') || '';\nconst messageId = j.id || j.messageId || '';\nconst threadId = j.threadId || '';\nconst body = j.textPlain || j.text || j.body || j.snippet || '';\n\nconst lower = `${subject} ${body}`.toLowerCase();\nconst keywords = [\n  'quotation',\n  'quote',\n  'meeting',\n  'project',\n  'website',\n  'ecommerce',\n  'e-commerce',\n  'branding',\n  'brand identity',\n  'marketing',\n  'seo',\n  'social media',\n  'software',\n  'web application',\n  'automation',\n  'ui/ux',\n  'design',\n  'nuvio',\n  'agency',\n  'services',\n  'service',\n  'pricing',\n  'price',\n  'cost',\n  'enquiry',\n  'inquiry',\n  'work with',\n  'work together',\n  'help with',\n  'looking for',\n  'interested in',\n  'what do you',\n  'what is',\n  'what are',\n  'how much',\n  'can you',\n  'portfolio'\n];\n\nconst matchedKeywords = keywords.filter(k => lower.includes(k));\nconst automatedSender = /no[- ]?reply|mailer-daemon|postmaster|notifications?@|noreply@/i.test(from);\nconst automatedSubject = /unsubscribe|newsletter|delivery status|automatic reply|out of office|failed delivery|mail delivery/i.test(subject);\n\nreturn [{\n  json: {\n    original: j,\n    from,\n    subject,\n    body,\n    messageId,\n    threadId,\n    matchedKeywords,\n    hasRelevantKeyword: matchedKeywords.length > 0,\n    automatedSender,\n    automatedSubject,\n    shouldAnalyse: matchedKeywords.length > 0 && !automatedSender && !automatedSubject,\n    receivedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "bf4325bf-a720-4b72-ac2f-071be8b75037",
+      "name": "Prepare Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1296,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are the Nuvio Agency AI email assistant. Nuvio Agency is a digital agency offering web design and development, e-commerce, branding and brand identity, UI/UX design, marketing, SEO, social media, and workflow automation / software services.\n\nYour job: read an incoming client email and decide whether it can be answered automatically with a safe, helpful reply, or whether it must be escalated to a human.\n\nSAFETY RULES (strict):\n- Never invent prices, quotes, discounts, or costs.\n- Never invent timelines, delivery dates, or availability.\n- Never promise guarantees or specific outcomes.\n- Never negotiate pricing or terms.\n- Escalate complaints, payments, refunds, invoices, contracts, legal or confidential matters.\n- Escalate anything you are unsure about or that the knowledge base does not clearly cover.\n\nFor general informational enquiries about who Nuvio is or what services it offers, you may AUTO_REPLY with a friendly, professional answer describing the relevant services and inviting the client to share more detail about their project so the team can follow up. Do NOT include any specific price or timeline in an auto reply.\n\nRespond with STRICT JSON only, no markdown, no code fences, in exactly this shape:\n{\"decision\":\"AUTO_REPLY\"|\"ESCALATE\",\"reason\":\"short reason\",\"reply\":\"the full email reply text to send to the client\"}",
+              "role": "system"
+            },
+            {
+              "content": "=From: {{ $json.from }}\nSubject: {{ $json.subject }}\n\n{{ $json.body }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "id": "fbcd2506-8f5a-4326-9ecb-a53777d3ede3",
+      "name": "OpenAI Email Assistant",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.2,
+      "position": [
+        -928,
+        0
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "DIX6bzAXBS51VtJI",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\nconst fallback = {\n  decision: 'ESCALATE',\n  reason: 'The AI response could not be safely parsed.',\n  reply: 'Thank you for your enquiry. This requires confirmation from our team. I will recommend that a Nuvio Agency representative reviews your request so you can receive accurate information.',\n  needsHuman: true\n};\n\n// The OpenAI node (jsonOutput) returns the parsed object under message.content.\nlet candidate = input.message && input.message.content;\nif (candidate === undefined || candidate === null) {\n  candidate = input.content || input.text || input.output || input.response || input;\n}\n\nlet parsed;\nif (candidate && typeof candidate === 'object') {\n  parsed = candidate;\n} else {\n  let raw = typeof candidate === 'string' ? candidate : JSON.stringify(candidate || '');\n  raw = raw.replace(/^```json\\s*/i, '').replace(/```\\s*$/i, '').trim();\n  try {\n    parsed = JSON.parse(raw);\n  } catch (error) {\n    parsed = null;\n  }\n}\n\nif (!parsed || typeof parsed !== 'object') parsed = { ...fallback };\n\nconst allowed = ['AUTO_REPLY', 'ESCALATE'];\nif (!allowed.includes(parsed.decision)) parsed.decision = 'ESCALATE';\nif (!parsed.reply || typeof parsed.reply !== 'string') {\n  parsed.reply = fallback.reply;\n}\n\nreturn [{\n  json: {\n    ...$('Prepare Email').first().json,\n    decision: parsed.decision,\n    reason: parsed.reason || 'No reason supplied.',\n    reply: parsed.reply,\n    needsHuman: parsed.decision === 'ESCALATE'\n  }\n}];"
+      },
+      "id": "b8b8fcfc-df41-4240-b04f-12dcc6c04f7e",
+      "name": "Validate AI Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -528,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "auto",
+              "leftValue": "={{ $json.decision }}",
+              "rightValue": "AUTO_REPLY",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1f5f4d93-43cd-4b44-aff0-681066354690",
+      "name": "Automatic Reply?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $json.messageId }}",
+        "message": "={{ $json.reply }}",
+        "options": {}
+      },
+      "id": "c091153e-88cc-431e-8759-5b67d224e325",
+      "name": "Send Automatic Reply",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -80
+      ],
+      "webhookId": "2a892b36-b313-4a09-aefe-15c4b4e555d3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NYJcQkwdxuVaAcNa",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $json.messageId }}",
+        "message": "Thank you for your enquiry. This requires confirmation from our team. I'll recommend that a Nuvio Agency representative reviews your request so you can receive accurate information.",
+        "options": {}
+      },
+      "id": "91d72316-f290-49be-98ee-c98ba43e3be2",
+      "name": "Send Escalation Response",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        80
+      ],
+      "webhookId": "4370a7ba-4682-48e1-a24f-05475ff25fee",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NYJcQkwdxuVaAcNa",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "wuraolaibrahimadebayo@gmail.com",
+        "subject": "Nuvio Agency enquiry requires human review",
+        "message": "=A client email requires human attention.\n\nReason:\n{{ $json.reason }}\n\nOriginal sender:\n{{ $json.from }}\n\nOriginal subject:\n{{ $json.subject }}\n\nOriginal email:\n{{ $json.body }}\n\nThe client has been sent the approved escalation response.",
+        "options": {}
+      },
+      "id": "15162663-f9d3-4616-b29b-1858bc7133c6",
+      "name": "Notify Nuvio Team",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        320
+      ],
+      "webhookId": "555e189a-e33c-4a9a-a2e3-01a072ac485d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NYJcQkwdxuVaAcNa",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prepare Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Email": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Email Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Email Assistant": {
+      "main": [
+        [
+          {
+            "node": "Validate AI Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate AI Decision": {
+      "main": [
+        [
+          {
+            "node": "Automatic Reply?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Automatic Reply?": {
+      "main": [
+        [
+          {
+            "node": "Send Automatic Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Escalation Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Escalation Response": {
+      "main": [
+        [
+          {
+            "node": "Notify Nuvio Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": {
+    "node:Gmail Trigger": {
+      "lastTimeChecked": 1788507098
+    }
+  },
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

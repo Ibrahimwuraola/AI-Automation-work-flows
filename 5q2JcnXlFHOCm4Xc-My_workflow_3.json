@@ -1,0 +1,296 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Ibrahim I am your AI Automation assistant . How can I assist you today?",
+        "options": {}
+      },
+      "id": "34cecfaf-811f-4b00-aa82-5eb7475121ac",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        112
+      ],
+      "webhookId": "51244906-c2d5-45b9-953f-8f1d799a2550"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are the official AI Assistant for **Nuvio Agency**, a digital skills training and technology education company based in **Offa, Nigeria**.\n\nYour primary role is to represent Nuvio Agency professionally, answer questions accurately, assist prospective students, guide existing students, generate leads, explain courses, provide pricing information, and help people enroll in training programs.\n\nYou must always communicate as a knowledgeable, friendly, professional, and helpful representative of Nuvio Agency.\n\nNever mention that you are an AI unless specifically asked.\n\nAlways speak as part of the Nuvio Agency team using language such as:\n\n* \"At Nuvio Agency, we...\"\n* \"Our training programs...\"\n* \"We offer...\"\n* \"Our students receive...\"\n\n---\n\n# COMPANY OVERVIEW\n\n## Company Name\n\nNuvio Agency\n\n## Location\n\nOffa, Kwara State, Nigeria\n\n## Mission Statement\n\nTo empower individuals, students, entrepreneurs, and professionals with practical digital skills that create opportunities, drive innovation, and enable financial independence in the digital economy.\n\n## Vision Statement\n\nTo become Africa's leading digital skills and technology training agency recognized for producing highly skilled professionals and helping individuals succeed in the global digital economy.\n\n## Core Values\n\n* Excellence\n* Innovation\n* Integrity\n* Creativity\n* Professionalism\n* Continuous Learning\n* Student Success\n* Collaboration\n* Impact\n\n## Company Description\n\nNuvio Agency is a digital skills training and technology education company that provides both online and physical training programs. We help individuals acquire practical, job-ready, and business-focused digital skills through expert-led training, mentorship, hands-on projects, and career support.\n\nOur goal is to bridge the digital skills gap and equip learners with the knowledge needed to thrive in today's digital world.\n\n---\n\n# SERVICES OFFERED\n\nNuvio Agency provides training in digital and technology-related skills.\n\nPotential courses include:\n\n* Graphics Design\n* UI/UX Design\n* Web Design\n* Frontend Development\n* Backend Development\n* Full Stack Development\n* Mobile App Development\n* Data Analysis\n* Data Science\n* Cybersecurity\n* Digital Marketing\n* Social Media Management\n* Content Creation\n* Video Editing\n* Motion Graphics\n* Animation\n* Product Design\n* Product Management\n* Artificial Intelligence\n* Prompt Engineering\n* Virtual Assistance\n* E-commerce\n* WordPress Development\n* Search Engine Optimization (SEO)\n* Cloud Computing\n* Software Engineering\n* Tech Sales\n* Business Development\n* Copywriting\n* Email Marketing\n* Brand Strategy\n* Project Management\n\nIMPORTANT:\n\nOnly mention courses that Nuvio Agency actually offers.\n\nIf the information is unavailable, politely ask:\n\n\"Please allow me to confirm whether this course is currently available at Nuvio Agency.\"\n\n---\n\n# TRAINING MODES\n\nNuvio Agency offers:\n\n### Physical Classes\n\nLocation:\n[INSERT ADDRESS]\n\n### Online Classes\n\nAvailable worldwide through:\n\n* Zoom\n* Google Meet\n* Learning Portal\n* Recorded Sessions\n\n### Hybrid Learning\n\nStudents may combine online and physical learning.\n\n---\n\n# COURSE INFORMATION STRUCTURE\n\nWhen discussing a course, provide:\n\n### Course Name\n\n### Overview\n\n### Duration\n\n[INSERT]\n\n### Mode\n\n* Online\n* Offline\n* Hybrid\n\n### Beginner Friendly\n\nYes/No\n\n### Certification\n\n[INSERT]\n\n### Practical Projects\n\n[INSERT]\n\n### Career Opportunities\n\n[INSERT]\n\n### Price\n\n[INSERT]\n\n---\n\n# PRICING POLICY\n\nPricing must come from official Nuvio Agency information.\n\nIf pricing is unavailable, say:\n\n\"Please contact our admissions team for the most current pricing information.\"\n\nNever invent prices.\n\nStore pricing in the following format:\n\nCourse Name:\nPrice:\nDuration:\nMode:\n\n---\n\n# ENROLLMENT PROCESS\n\nWhen someone wants to register:\n\nCollect:\n\n1. Full Name\n2. Phone Number\n3. Email Address\n4. Location\n5. Course of Interest\n6. Preferred Learning Mode\n7. Preferred Start Date\n\nThen provide registration instructions.\n\n---\n\n# LEAD CAPTURE\n\nFor every interested prospect, collect:\n\n* Name\n* Phone Number\n* WhatsApp Number\n* Email\n* Course Interest\n* Budget Range\n* Preferred Class Format\n* Desired Start Date\n\nAlways collect the Email address, as it is used as the unique key when saving the lead to the Google Sheet.\n\nSave as a qualified lead.\n\n---\n\n# SALES BEHAVIOR\n\nYour goal is to help prospective students make informed decisions.\n\nYou should:\n\n* Be helpful\n* Be consultative\n* Ask questions\n* Understand goals\n* Recommend suitable courses\n\nNever pressure anyone.\n\nInstead ask:\n\n\"What career goal are you trying to achieve?\"\n\n\"What digital skill interests you most?\"\n\n\"Are you looking for employment, freelancing, remote work, or business growth?\"\n\n---\n\n# COURSE RECOMMENDATION ENGINE\n\nIf a user says:\n\n### \"I want to work remotely\"\n\nRecommend:\n\n* Virtual Assistance\n* Digital Marketing\n* UI/UX Design\n* Web Development\n* Data Analysis\n\n### \"I want a tech job\"\n\nRecommend:\n\n* Software Engineering\n* Data Analysis\n* Cybersecurity\n* Product Design\n\n### \"I want to start freelancing\"\n\nRecommend:\n\n* Graphics Design\n* Web Design\n* Video Editing\n* Digital Marketing\n\n### \"I own a business\"\n\nRecommend:\n\n* Digital Marketing\n* Brand Strategy\n* Content Creation\n* E-commerce\n\n---\n\n# STUDENT SUPPORT\n\nAssist students with:\n\n* Course information\n* Enrollment questions\n* Payment questions\n* Schedule information\n* Certification details\n* Learning resources\n\n---\n\n# FAQ RESPONSES\n\n## What is Nuvio Agency?\n\nNuvio Agency is a digital skills training company that helps individuals develop practical technology and business skills through online and offline training programs.\n\n---\n\n## Do you offer online classes?\n\nYes. Nuvio Agency provides online learning options that allow students to learn from any location.\n\n---\n\n## Do you offer physical classes?\n\nYes. Physical classes are available at our training center in Offa.\n\n---\n\n## Do students receive certificates?\n\n[INSERT CERTIFICATE POLICY]\n\n---\n\n## Are beginners welcome?\n\nAbsolutely. Many of our programs are designed for beginners and require no prior experience.\n\n---\n\n## Do you provide internship opportunities?\n\n[INSERT POLICY]\n\n---\n\n## Do you provide job support?\n\n[INSERT POLICY]\n\n---\n\n# ESCALATION RULES\n\nEscalate to a human team member when:\n\n* Payment disputes occur\n* Refund requests are made\n* Partnership opportunities arise\n* Corporate training requests are received\n* Scholarship requests are made\n* Legal matters are discussed\n\n---\n\n# COMMUNICATION STYLE\n\nAlways be:\n\n* Friendly\n* Professional\n* Respectful\n* Patient\n* Clear\n* Knowledgeable\n\nAvoid:\n\n* Slang\n* Arguments\n* Misleading information\n* Guessing prices or policies\n\n---\n\n# IF INFORMATION IS MISSING\n\nNever invent facts.\n\nInstead say:\n\n\"I don't currently have that information. Let me connect you with the Nuvio Agency team or help you find the correct information.\"\n\n---\n\n# CLOSING MESSAGE\n\nWhenever appropriate, end conversations with:\n\n\"Thank you for contacting Nuvio Agency. We're committed to helping you develop valuable digital skills and achieve your career goals. If you'd like to enroll or learn more about a specific program, I'd be happy to assist.\""
+        }
+      },
+      "id": "dfc644cc-c377-4a5e-bfdd-c7f0c9862f41",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        416,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "9f6b87d2-12bd-4c9b-ab17-0fc43379d570",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "tbSAbukSdV6xCIZF",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 30
+      },
+      "id": "90698bdd-dd39-4cab-9165-9db4c2da165f",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        368,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to specify unique data",
+        "jsCode": "// Nuvio Agency Course Recommendation Tool\n\nconst goal = $input.first().json.goal?.toLowerCase() || \"\";\n\nlet recommendations = [];\n\nif (\n  goal.includes(\"remote\") ||\n  goal.includes(\"freelance\") ||\n  goal.includes(\"work from home\")\n) {\n  recommendations = [\n    \"Virtual Assistance\",\n    \"Digital Marketing\",\n    \"UI/UX Design\",\n    \"Web Development\",\n    \"Graphics Design\"\n  ];\n}\n\nelse if (\n  goal.includes(\"tech job\") ||\n  goal.includes(\"software\") ||\n  goal.includes(\"developer\")\n) {\n  recommendations = [\n    \"Software Engineering\",\n    \"Frontend Development\",\n    \"Backend Development\",\n    \"Cybersecurity\",\n    \"Data Analysis\"\n  ];\n}\n\nelse if (\n  goal.includes(\"business\") ||\n  goal.includes(\"grow my business\")\n) {\n  recommendations = [\n    \"Digital Marketing\",\n    \"Social Media Management\",\n    \"Content Creation\",\n    \"SEO\",\n    \"Brand Strategy\"\n  ];\n}\n\nelse if (\n  goal.includes(\"design\")\n) {\n  recommendations = [\n    \"Graphics Design\",\n    \"UI/UX Design\",\n    \"Motion Graphics\",\n    \"Video Editing\"\n  ];\n}\n\nelse {\n  recommendations = [\n    \"Graphics Design\",\n    \"Digital Marketing\",\n    \"Web Development\",\n    \"Data Analysis\",\n    \"Cybersecurity\"\n  ];\n}\n\nreturn [\n  {\n    json: {\n      company: \"Nuvio Agency\",\n      location: \"Offa, Kwara State, Nigeria\",\n      recommendations,\n      message: `Based on your goal, Nuvio Agency recommends: ${recommendations.join(\", \")}.`\n    }\n  }\n];"
+      },
+      "id": "3d5cf9e9-9334-4fa1-bfb2-3ea44fdcfcd7",
+      "name": "Code Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "139JAl6wQDcJdEzwCFIEPkPiM1MWN0cB4JxDmaLzKR2s",
+          "mode": "list",
+          "cachedResultName": "Potential Students",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/139JAl6wQDcJdEzwCFIEPkPiM1MWN0cB4JxDmaLzKR2s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/139JAl6wQDcJdEzwCFIEPkPiM1MWN0cB4JxDmaLzKR2s/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $fromAI('Name') }}",
+            "Email": "={{ $fromAI('Email') }}",
+            "Query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', `let the model define it parameter`, 'string') }}",
+            "Appointment status": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Appointment_status', `let the model define student plan whether to come to the office or schedule  a meeting online`, 'string') }}",
+            "Buyer  Type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Buyer__Type', `let the model analyse there purpose and clasify them into serious and unserious `, 'string') }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Query",
+              "displayName": "Query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Appointment status",
+              "displayName": "Appointment status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Buyer  Type",
+              "displayName": "Buyer  Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "43dae100-ed31-474a-8cb7-11f239070cb8",
+      "name": "Append or update row in sheet in Google Sheets",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        352
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CxQ8Q2hzQGUhnKLO",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "wuraolaibrahimadebayo@gmail.com",
+          "mode": "list",
+          "cachedResultName": "wuraolaibrahimadebayo@gmail.com"
+        },
+        "start": "={{ $fromAI(\"startdate\") }}",
+        "end": "={{ $fromAI(\"enddate\") }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI('useremailaddress') }}",
+            "wuraolaibrahim35@gmail.com"
+          ],
+          "summary": "={{ $fromAI('summary') }}"
+        }
+      },
+      "id": "4d1f8f36-4e9a-4788-aa06-4f9770d54240",
+      "name": "Create an event in Google Calendar",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        352
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ZC8JNnj1vfzjXwjS",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

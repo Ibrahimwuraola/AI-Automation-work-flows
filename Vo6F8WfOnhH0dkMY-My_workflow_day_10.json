@@ -1,0 +1,190 @@
+{
+  "name": "My workflow day 10",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        -96
+      ],
+      "id": "b30d0bba-5207-4428-9595-51d4c71ef1ff",
+      "name": "WhatsApp Trigger",
+      "webhookId": "82b7d78b-3ef6-46ad-9542-9277b9dee90d",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "lahhRvh7sUbEyXNl",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -48,
+        -96
+      ],
+      "id": "f45d30b7-2a51-444b-8dc7-656cc0f9fb57",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -192,
+        112
+      ],
+      "id": "cf943e12-19de-48f0-b002-7e6be43e1012",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "tbSAbukSdV6xCIZF",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -64,
+        112
+      ],
+      "id": "9a46c80d-8c5c-4d49-8901-5ae44a818b26",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1255428637653341",
+        "recipientPhoneNumber": "2348162736652",
+        "textBody": "Hello ",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        512,
+        -256
+      ],
+      "id": "76886bca-6fd1-4aac-9bd6-ecf847806681",
+      "name": "Send message and wait for response",
+      "webhookId": "90519156-05e6-4b17-a3a3-2841eb88cb54",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "yzt6HZwXI9RFvARw",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1255428637653341",
+        "recipientPhoneNumber": "2348162736652",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        336,
+        -80
+      ],
+      "id": "08cb931d-24af-4701-8461-09e7b14d39ae",
+      "name": "Send message and wait for response1",
+      "webhookId": "9579e351-be7b-4480-bce4-c749282e7b23",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "MJrhxOlvm4sN8l0Y",
+          "name": "WhatsApp account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "name": "My workflow  day 6",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Ibrahim, your AI automation assistant. How can I assist you today?",
+        "options": {}
+      },
+      "id": "9678bad7-bf1a-469a-be2a-13475a1b2521",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        112
+      ],
+      "webhookId": "501894af-fe50-4d22-a932-d9d3bca65480"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a professional AI Customer Support Assistant. Help customers quickly and accurately with questions about products, services, orders, payments, shipping, returns, refunds, and general inquiries.\n\nYour responsibilities:\n\n* Respond in a friendly, professional, and helpful tone.\n* Understand the customer's issue before providing a solution.\n* Give clear, concise, step-by-step guidance when necessary.\n* Use only verified information from the company's knowledge base.\n* Never invent product details, prices, policies, order information, or company information.\n* If you do not know the answer, clearly say so and offer to connect the customer with a human support agent.\n* For complaints, remain calm, empathetic, and solution-focused.\n* Protect customer privacy and never request unnecessary sensitive information such as passwords or full payment card details.\n* When handling orders, ask for the appropriate order number or reference when required.\n* Escalate complex, sensitive, or unresolved issues to a human agent.\n* Always prioritize customer satisfaction, accuracy, security, and fast resolution.\n\nYour goal is to provide an excellent customer experience by resolving issues efficiently while making every customer feel heard and supported.\n"
+            },
+            {
+              "content": "={{ $json.chatInput }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        141.25
+      ],
+      "id": "4324fc4a-9b3a-4a29-af43-3539d8334527",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "tbSAbukSdV6xCIZF",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

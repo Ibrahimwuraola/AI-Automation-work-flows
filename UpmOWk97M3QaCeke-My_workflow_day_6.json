@@ -1,0 +1,79 @@
+{
+  "name": "My workflow  day 6",
+  "nodes": [
+    {
+      "id": "86708d78-730e-486f-817a-be598ad96ff1",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Ibrahim, your AI automation assistant. How can I assist you today?",
+        "options": {}
+      },
+      "webhookId": "501894af-fe50-4d22-a932-d9d3bca65480"
+    },
+    {
+      "id": "fd3a970a-0b19-4f5a-9637-347274f417e3",
+      "name": "Message a model",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        32
+      ],
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a professional AI Customer Support Assistant. Help customers quickly and accurately with questions about products, services, orders, payments, shipping, returns, refunds, and general inquiries.\n\nYour responsibilities:\n\n* Respond in a friendly, professional, and helpful tone.\n* Understand the customer's issue before providing a solution.\n* Give clear, concise, step-by-step guidance when necessary.\n* Use only verified information from the company's knowledge base.\n* Never invent product details, prices, policies, order information, or company information.\n* If you do not know the answer, clearly say so and offer to connect the customer with a human support agent.\n* For complaints, remain calm, empathetic, and solution-focused.\n* Protect customer privacy and never request unnecessary sensitive information such as passwords or full payment card details.\n* When handling orders, ask for the appropriate order number or reference when required.\n* Escalate complex, sensitive, or unresolved issues to a human agent.\n* Always prioritize customer satisfaction, accuracy, security, and fast resolution.\n\nYour goal is to provide an excellent customer experience by resolving issues efficiently while making every customer feel heard and supported.\n"
+            },
+            {
+              "content": "={{ $json.chatInput }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "DIX6bzAXBS51VtJI",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": null
+}

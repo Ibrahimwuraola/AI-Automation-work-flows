@@ -1,0 +1,74 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "School Attendance",
+        "formDescription": "SUMMIT UNIVERSITY",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "E-mail",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Phone Number",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What level are you?",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "100 lvl"
+                  },
+                  {
+                    "option": "200lvl"
+                  },
+                  {
+                    "option": "300lvl"
+                  },
+                  {
+                    "option": "400lvl"
+                  },
+                  {
+                    "option": "500lvl"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "What is your department"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d7812e22-45c7-4b2c-992a-1f93021942d7",
+      "name": "On form submission",
+      "webhookId": "0f9fa24f-a0e1-409f-853d-823fc1d5e241"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": null
+}
